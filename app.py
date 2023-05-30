@@ -18,9 +18,9 @@ class Package:
 class Agent:
     def __init__(self):
         self.packages = {
-            'iceland': Package('Iceland', 'Lagoon', 'Air Canada', 'Excursions', 'Departure time: 6am 07/05/23', 2100),
-            'greece': Package('Greece', 'Westin', 'Air Canada', 'Food Tour', 'Departure time: 6am 07/05/23', 2000),
-            'banff': Package('Banff', 'Fairmont', 'Air Canada', 'Guided Tour', 'Departure time: 6am 07/05/23', 1900),
+            'iceland': Package('Iceland', 'Lagoon', 'Air Canada', 'Excursions', '6am 07/05/23', 2100),
+            'greece': Package('Greece', 'Westin', 'Air Canada', 'Food Tour', '6am 07/05/23', 2000),
+            'banff': Package('Banff', 'Fairmont', 'Air Canada', 'Guided Tour', '6am 07/05/23', 1900),
         }
 
     def get_packages(self, destination):
