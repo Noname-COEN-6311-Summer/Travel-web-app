@@ -182,6 +182,7 @@ def iceland():
     return render_template('iceland.html', report=report)
 
 
+
 @app.route('/greece.html')
 def greece():
     agent = Agent()
