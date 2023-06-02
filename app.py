@@ -1,9 +1,8 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-
+app.secret_key = 'your_secret_key'
 
 class Package:
     def __init__(self, destination, hotel, flights, activities, departure, price):
@@ -43,7 +42,7 @@ class Agent:
     def calculate_price(self, package):
         prices = {
             'New York': 1000,
-            'Paris': 1100,
+            'Paris': 1200,
             'London': 800,
             'Rome': 900,
             'Montreal': 800,
@@ -110,7 +109,19 @@ class Agent:
         rows = cursor.fetchall()
         cursor.close()
         connection.close()
-        return rows
+
+        packages = []
+        for row in rows:
+            destination = row[1]
+            hotel = row[2]
+            flights = row[3]
+            activities = row[4]
+            departure = row[5]
+            price = row[6]
+            package = Package(destination, hotel, flights, activities, departure, price)
+            packages.append(package)
+
+        return packages
 
 
 class Customer:
@@ -134,6 +145,51 @@ class Customer:
         return False
 
 
+class AccountManager:
+    def __init__(self):
+        self.create_table()
+
+    def create_table(self):
+        connection = sqlite3.connect('accounts.db')
+        cursor = connection.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE,
+                password TEXT
+            )
+        ''')
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+    def register(self, username, password):
+        connection = sqlite3.connect('accounts.db')
+        cursor = connection.cursor()
+        cursor.execute('INSERT INTO accounts (username, password) VALUES (?, ?)', (username, password))
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+    def login(self, username, password):
+        connection = sqlite3.connect('accounts.db')
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM accounts WHERE username=? AND password=?', (username, password))
+        account = cursor.fetchone()
+        cursor.close()
+        connection.close()
+
+        if account:
+            session['logged_in'] = True
+            return True
+        return False
+
+    def logout(self):
+        session.pop('logged_in', None)
+
+account_manager = AccountManager()
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -144,7 +200,12 @@ def index():
             return redirect(destination_url)
         else:
             return render_template('index.html', search_error=True)
-    return render_template('index.html', search_error=False)
+
+    logged_in = False
+    if 'logged_in' in session:
+        logged_in = True
+
+    return render_template('index.html', search_error=False, logged_in=logged_in)
 
 
 @app.route('/creation', methods=['GET', 'POST'])
@@ -162,17 +223,20 @@ def creation():
             customer = Customer()
             customer.modify_package(destination, hotel, flights, activities, departure)
             return redirect(url_for('creation'))
+        else:
+            destination = request.form.get('destination')
+            hotel = request.form.get('hotel')
+            flights = request.form.get('flights')
+            activities = request.form.get('activities')
+            departure = request.form.get('departure')
 
-    destination = request.form.get('destination')
-    hotel = request.form.get('hotel')
-    flights = request.form.get('flights')
-    activities = request.form.get('activities')
-    departure = request.form.get('departure')
+            package = Package(destination, hotel, flights, activities, departure, 0)
+            total_price = agent.calculate_price(package)
+            agent.store_package(package)  # Store the new package in the database
 
-    package = Package(destination, hotel, flights, activities, departure, 0)
-    total_price = agent.calculate_price(package)
+            return render_template('creation.html', package=package, total_price=total_price)
 
-    return render_template('creation.html', package=package, total_price=total_price)
+    return render_template('creation.html', package=None, total_price=0)
 
 
 @app.route('/iceland.html')
@@ -180,7 +244,6 @@ def iceland():
     agent = Agent()
     report = agent.represent_packages('iceland')
     return render_template('iceland.html', report=report)
-
 
 
 @app.route('/greece.html')
@@ -205,12 +268,44 @@ def destination_page(destination):
         return render_template('destination.html', report=report)
     else:
         return redirect(url_for('index'))
-
+@app.route('/about_us')
+def about_us():
+    return render_template('about_us.html')
 @app.route('/database')
 def view_database():
     agent = Agent()
-    rows = agent.show_database()
-    return render_template('database.html', rows=rows)
+    packages = agent.show_database()
+    return render_template('database.html', packages=packages)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        account_manager.register(username, password)
+        return redirect(url_for('index'))
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    login_status = None  # Variable to indicate the login status
+    error_message = None  # Variable to store the error message
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if account_manager.login(username, password):
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            login_status = 'error'
+            error_message = 'Invalid username or password.'
+    return render_template('login.html', login_status=login_status, error_message=error_message)
+
+@app.route('/logout')
+def logout():
+    # Perform logout operations here
+    # Redirect to the desired page after logout
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
