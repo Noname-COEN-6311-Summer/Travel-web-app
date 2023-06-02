@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{%  block content %}
+    <div class="bg-container">
+        <video id="video-background" autoplay loop>
+            <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <div style="margin-top:2rem">
+        <h1>About Us</h1>
+
+        <p>Welcome to our website! We are a group of five dedicated developers working on creating a seamless booking system for travel agents. Our goal is to provide a user-friendly platform that simplifies the process of planning and booking travel packages.</p>
+
+        <p>With a passion for travel and technology, we have come together to build a robust web application that enables travel agents and customers to explore a wide range of destinations, find the perfect packages, and make reservations with ease.</p>
+
+        <p>Our team is committed to delivering a top-notch user experience, ensuring that the booking system is intuitive, reliable, and secure. We are continuously striving to enhance the functionality and features of our application to meet the evolving needs of the travel industry.</p>
+
+        <p>Through our collective expertise in web development, user experience design, and database management, we aim to revolutionize the way travel agents and customers interact, making the process efficient, enjoyable, and hassle-free.</p>
+
+        <p>We appreciate your interest in our project and invite you to explore our website to experience the convenience and possibilities it offers. We value your feedback and suggestions as we continue to refine and improve our system.</p>
+
+        <p>Thank you for choosing our platform, and we look forward to serving you on your exciting travel adventures!</p>
+    </div>
+<!--</body>-->
+<!--</html>-->
+{% endblock %}
