@@ -13,7 +13,6 @@ class Package:
         self.departure = departure
         self.price = price
 
-
 class Agent:
     def __init__(self):
         self.packages = {
