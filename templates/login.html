@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Login</h2>
+    {% if login_status == 'error' %}
+        <div id="notification" class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% elif login_status == 'success' %}
+        <div id="notification" class="alert alert-success" role="alert">
+            Valid username or password.
+        </div>
+    {% endif %}
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a href="{{ url_for('reset_password') }}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+{% endblock %}

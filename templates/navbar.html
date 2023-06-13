@@ -10,25 +10,53 @@
                 <li class="nav-item">
                     <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Profile</a>
-                </li>
+                {% if logged_in %}
+                    {%  if username == 'DiWang' or username == 'Melika' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ url_for('workstation') }}">Workstation</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                {%  if logged_in %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ url_for('profile') }}">Your Profile</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/login">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/register">Sign Up</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/creation">Customize packages</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white">Cart</a>
+                    <a class="nav-link text-white">Message</a>
                 </li>
+{#                {% if logged_in %}#}
+{#                    <a href="{{ url_for('logout') }}" class="btn btn-danger ms-3">Log Out</a>#}
+{#                {% endif %}#}
             </ul>
             <form class="d-flex" action="{{ url_for('index') }}" method="POST">
                 <input class="form-control me-2" type="search" name="search" placeholder="Destination" aria-label="Search">
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
-
         </div>
+
+{#        {% if logged_in %}#}
+{#            <a href="{{ url_for('logout') }}" class="btn btn-danger ms-3">Log Out</a>#}
+{#        {% endif %}#}
     </div>
 </nav>
 
+{#{% if logged_in %}#}
+{#    <div class="container-fluid mt-2">#}
+{#        <div class="row justify-content-end">#}
+{#            <div class="col-auto">#}
+{#                <a href="{{ url_for('logout') }}" class="btn btn-danger">Log Out</a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endif %}#}

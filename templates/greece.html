@@ -13,6 +13,11 @@
             <p>Price: ${{ report.Price }}</p>
             </div>
         </div>
+        <form method="post" action="/book">
+            <input type="hidden" name="destination" value="greece">
+            <button type="submit" class="btn btn-primary">Book Now</button>
+        </form>
     </div>
     </div>
+
 {% endblock %}

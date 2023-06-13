@@ -5,8 +5,19 @@
     <video id="video-background" autoplay loop>
         <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
     </video>
-    <div class="overlay position-absolute top-0 start-0 w-100 h-50 d-flex align-items-center justify-content-center">
-        <h1 class="text-white display-5">RECONNECT THE WORLD WITH YOUR TRAVEL</h1>
+    <div class="overlay position-absolute top-0 start-0 w-100 h-50 d-flex align-items-center justify-content-center flex-column">
+        <h1 class="text-white display-5 mb-4">RECONNECT THE WORLD WITH YOUR TRAVEL</h1>
+        {% if logged_in %}
+        <div class="text-center mt-3">
+            <a href="/profile" class="btn btn-primary btn-lg me-2">Your Profile</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg">LOG OUT</a>
+        </div>
+        {% else %}
+        <div class="d-flex">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-2">LOG IN</a>
+            <a href="/register" class="btn btn-secondary btn-lg">SIGN UP</a>
+        </div>
+        {% endif %}
     </div>
 
     <div class="fp py-10">
@@ -57,11 +68,140 @@
             </div>
         </div>
     </div>
+
+    <div style="margin-top: 20px;">
+    <style>
+    .footer {
+        background-color: #b8253d;
+        color: #ffffff;
+        padding: 30px 0;
+    }
+
+    .footer .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .footer .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .footer .section {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+        margin-bottom: 30px;
+    }
+
+    .footer .section h4 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .footer .section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer .section ul li {
+        margin-bottom: 10px;
+    }
+
+    .footer .section ul li a {
+        color: #ffffff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer .section ul li a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .footer .section .social-icons {
+        margin-top: 10px;
+    }
+
+    .footer .section .social-icons a {
+        display: inline-block;
+        color: #ffffff;
+        margin-right: 10px;
+        font-size: 20px;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer .section .social-icons a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .footer .section .contact-info {
+        margin-top: 10px;
+    }
+
+    .footer .section .contact-info p {
+        margin-bottom: 5px;
+    }
+    </style>
+
+    <style>
+        .icon {
+            width: 20px; /* Adjust the size as needed */
+            height: 20px; /* Adjust the size as needed */
+        }
+    </style>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="section">
+                <div class="logo">Your Travel Company</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu aliquam dui.</p>
+                <div class="social-icons">
+                    <a href="#"><img src="{{ url_for('static', filename='facebook.png') }}" alt="Facebook" class="icon"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='twitter.png') }}" alt="Twitter" class="icon"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='insta.png') }}" alt="Instagram" class="icon"></a>
+                </div>
+                <div class="contact-info">
+                    <p>Phone: 123-456-7890</p>
+                    <p>Address: 123 Main Street, Montréal, CANADA</p>
+                </div>
+            </div>
+            <div class="section">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">Vacation Packages</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Flights</a></li>
+                    <li><a href="#">Cruises</a></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a class="nav-link " href="#">Contact Us</a></li>
+                    <li><a class="nav-link " href="#">About Us</a></li>
+                    <li><a class="nav-link " href="#">FAQs</a></li>
+                    <li><a class="nav-link " href="#">Terms and Conditions</a></li>
+                    <li><a class="nav-link " href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    </div>
+
     {% if search_error %}
         <div class="alert alert-danger" role="alert">
             No results, try customizing travel packages!
         </div>
     {% endif %}
 </div>
+
 
 {% endblock %}

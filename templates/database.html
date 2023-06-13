@@ -15,15 +15,15 @@
             <th>Departure Time</th>
             <th>Price</th>
         </tr>
-        {% for row in rows %}
+        {% for package in packages %}
             <tr>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>{{ row[5] }}</td>
-                <td>{{ row[6] }}</td>
-            </tr>
+                <td>{{ package.destination }}</td>
+                <td>{{ package.hotel }}</td>
+                <td>{{ package.flights }}</td>
+                <td>{{ package.activities }}</td>
+                <td>{{ package.departure }}</td>
+                <td>{{ package.price }}</td>
+        </tr>
         {% endfor %}
     </table>
 </body>

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+    <h2>Workstation</h2>
+    {% for customer in customers %}
+    <h3>{{ customer.username }}</h3>
+    {% set bookings = customer.get_book_information().get_bookings() %}
+    {% if bookings %}
+    <table class="table">
+        <tr>
+            <th>Destination</th>
+            <th>Hotel</th>
+            <th>Flights</th>
+            <th>Activities</th>
+            <th>Departure Time</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        {% for booking in bookings %}
+        {% if booking.destination in ['Banff', 'Iceland', 'Greece'] %}
+        <tr>
+            <td>{{ booking.destination }}</td>
+            <td>{{ booking.hotel }}</td>
+            <td>{{ booking.flights }}</td>
+            <td>{{ booking.activities }}</td>
+            <td>{{ booking.departure }}</td>
+            <td>{{ customer.agent.calculate_price(booking) }}</td>
+            <td>N/A</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        {% for booking in bookings %}
+            {% if booking.destination not in ['Banff', 'Iceland', 'Greece'] %}
+                <tr>
+                    <form method="post" action="/modify-booking">
+                        <input type="hidden" name="booking_id" value="{{ booking.id or ''}}">
+                        <input type="hidden" name="username" value="{{ customer.username }}">
+                        <td>
+                            <select name="destination">
+                                <option value="New York" {% if booking.destination == 'New York' %}selected{% endif %}>New York</option>
+                                <option value="Paris" {% if booking.destination == 'Paris' %}selected{% endif %}>Paris</option>
+                                <option value="London" {% if booking.destination == 'London' %}selected{% endif %}>London</option>
+                                <option value="Rome" {% if booking.destination == 'Rome' %}selected{% endif %}>Rome</option>
+                                <option value="Montreal" {% if booking.destination == 'Montreal' %}selected{% endif %}>Montreal</option>
+                                <option value="Tokyo" {% if booking.destination == 'Tokyo' %}selected{% endif %}>Tokyo</option>
+                                <option value="Toronto" {% if booking.destination == 'Toronto' %}selected{% endif %}>Toronto</option>
+                                <option value="Vancouver" {% if booking.destination == 'Vancouver' %}selected{% endif %}>Vancouver</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </td>
+                        <td>
+                            <select name="hotel">
+                                <option value="Hilton" {% if booking.hotel == 'Hilton' %}selected{% endif %}>Hilton</option>
+                                <option value="Holiday" {% if booking.hotel == 'Holiday' %}selected{% endif %}>Holiday</option>
+                                <option value="Marriott" {% if booking.hotel == 'Marriott' %}selected{% endif %}>Marriott</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </td>
+                        <td>
+                            <select name="flights">
+                                <option value="Air Canada" {% if booking.flights == 'Air Canada' %}selected{% endif %}>Air Canada</option>
+                                <option value="WestJet" {% if booking.flights == 'WestJet' %}selected{% endif %}>WestJet</option>
+                                <option value="Poter" {% if booking.flights == 'Poter' %}selected{% endif %}>Poter</option>
+                                <option value="Air Transit" {% if booking.flights == 'Air Transit' %}selected{% endif %}>Air Transit</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </td>
+                        <td>
+                            <select name="activities">
+                                <option value="guided tour" {% if booking.activities == 'guided tour' %}selected{% endif %}>Guided Tour</option>
+                                <option value="food" {% if booking.activities == 'food' %}selected{% endif %}>Food</option>
+                                <option value="excursions" {% if booking.activities == 'excursions' %}selected{% endif %}>Excursions</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </td>
+                        <td>
+                            <input type="datetime-local" name="departure" value="{{ booking.departure }}">
+                        </td>
+                        <td>{{ customer.agent.calculate_price(booking) }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Modify</button>
+                        </td>
+                    </form>
+                    {% else %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No bookings found.</p>
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

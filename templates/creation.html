@@ -50,6 +50,7 @@
         <input type="submit" value="Submit">
     </form>
 
+    {% if package %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-8">
@@ -71,9 +72,22 @@
                         <p>Please select your travel components again and submit.</p>
                     </div>
                 </div>
+                <form method="post" action="/book">
+                    <input type="hidden" name="destination" value="{{ package.destination }}">
+                    <input type="hidden" name="hotel" value="{{ package.hotel }}">
+                    <input type="hidden" name="flights" value="{{ package.flights }}">
+                    <input type="hidden" name="activities" value="{{ package.activities }}">
+                    <input type="hidden" name="departure" value="{{ package.departure }}">
+                    <input type="hidden" name="price" value="{{ total_price }}">
+                    <button type="submit" class="btn btn-primary">Book Now</button>
+                </form>
+{#                <button class="btn btn-primary" onclick="bookPackage('{{ package.destination }}', '{{ package.price }}')">Book Now</button>#}
+{#                <button class="btn btn-primary" onclick="bookPackage('{{ destination }}', '{{ total_price }}')">Book Now</button>#}
             </div>
         </div>
     </div>
+    {% endif %}
+
     <script>
         document.getElementById("modify-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent default form submission
@@ -86,6 +100,29 @@
                 document.getElementById("modify-form").submit(); // Submit the form after displaying the notification
             }, 3000); // Adjust the duration (in milliseconds) as desired
         });
+
+        {#function bookPackage(destination) {#}
+        {#    // Retrieve the package information#}
+        {#    var hotel = "{{ report.Hotel }}";#}
+        {#    var flights = "{{ report.Flights }}";#}
+        {#    var activities = "{{ report.Activities }}";#}
+        {#    var departure = "{{ report.Departure_Time }}";#}
+        {#    var price = "{{ report.Price }}";#}
+        {##}
+        {#    // Store the package information in the session#}
+        {#    var package = {#}
+        {#        'destination': destination,#}
+        {#        'hotel': hotel,#}
+        {#        'flights': flights,#}
+        {#        'activities': activities,#}
+        {#        'departure': departure,#}
+        {#        'price': price#}
+        {#    };#}
+        {#    sessionStorage.setItem('package', JSON.stringify(package));#}
+        {##}
+        {#    // Redirect to the profile page#}
+        {#    window.location.href = "/creation";#}
+
     </script>
 </body>
 </html>

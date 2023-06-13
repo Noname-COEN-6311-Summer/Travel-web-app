@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer</title>
+</head>
+<body>
+    <footer class="footer">
+        <div class="container">
+            <div class="section">
+                <div class="logo">Your Travel Company</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu aliquam dui.</p>
+                <div class="social-icons">
+                    <a href="#"><img src="{{ url_for('static', filename='facebook.png') }}" alt="Facebook" class="icon"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='twitter.png') }}" alt="Twitter" class="icon"></a>
+                    <a href="#"><img src="{{ url_for('static', filename='insta.png') }}" alt="Instagram" class="icon"></a>
+                </div>
+                <div class="contact-info">
+                    <p>Phone: 123-456-7890</p>
+                    <p>Address: 123 Main Street, City, Country</p>
+                </div>
+            </div>
+            <div class="section">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">Vacation Packages</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Flights</a></li>
+                    <li><a href="#">Cruises</a></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a class="nav-link " href="#">Contact Us</a></li>
+                    <li><a class="nav-link " href="#">About Us</a></li>
+                    <li><a class="nav-link " href="#">FAQs</a></li>
+                    <li><a class="nav-link " href="#">Terms and Conditions</a></li>
+                    <li><a class="nav-link " href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

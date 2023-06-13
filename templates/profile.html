@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>User Profile</h2>
+    {% if profile %}
+        <table class="table">
+            <tr>
+                <th>Username:</th>
+                <td>{{ profile[1] }}</td>
+            </tr>
+        </table>
+
+        <h3>Bookings:</h3>
+        {% if bookings %}
+            <table class="table">
+                <tr>
+                    <th>Destination</th>
+                    <th>Hotel</th>
+                    <th>Flights</th>
+                    <th>Activities</th>
+                    <th>Departure Time</th>
+                    <th>Price</th>
+                </tr>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.destination }}</td>
+                        <td>{{ booking.hotel }}</td>
+                        <td>{{ booking.flights }}</td>
+                        <td>{{ booking.activities }}</td>
+                        <td>{{ booking.departure }}</td>
+                        <td>{{ booking.price }}</td>
+                        <td>
+                            <form method="post" action="/cancel-booking">
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="/pay-booking">
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                <button type="submit" class="btn btn-success">Pay</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No bookings found.</p>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            User profile not found.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
